@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <td colspan="4">
+                    <input type="text" id="inputBox" value="0"/>
+                </td>
+            </tr>
+            <tr>         
+                <tr>
+              <td class="funtion" onclick="applyFunction('Math.sin(')">sin</td>
+              <td class="operatorButton" onclick="appendFunction('Math.cos(')">cos</td>
+              <td class="operatorButton" onclick="appendFunction('Math.tan(')">tan</td>
+              <td class="operatorButton" onclick="appendSymbol(')')">)</td>
+         </tr>
+         <tr>
+              <td class="operatorButton" onclick="appendSymbol('(')">(</td>
+              <td class="operatorButton" onclick="appendSymbol('%')">%</td>
+              <td class="operatorButton" onclick="appendSymbol('**')">^</td>
+              <td class="operatorButton" onclick="appendFunction('Math.sqrt(')">√</td>
+         </tr>
+            
+                <tr>
+                    <td class="operatorButton" onclick="appendToInput('%')">%</td>
+                    <td class="operatorButton" onclick="appendToInput('^')">^</td>
+                    <td class="operatorButton" onclick="appendToInput('(')">(</td>
+                    <td calss="operatorButton" onclick="appendToInput(')')">)</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(7)">7</td>
+                <td class="digitButton" onclick="digitBtnPressed(8)">8</td>
+                <td class="digitButton" onclick="digitBtnPressed(9)">9</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('*')">*</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(4)">4</td>
+                <td class="digitButton" onclick="digitBtnPressed(5)">5</td>
+                <td class="digitButton" onclick="digitBtnPressed(6)">6</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(1)">1</td>
+                <td class="digitButton" onclick="digitBtnPressed(2)">2</td>
+                <td class="digitButton" onclick="digitBtnPressed(3)">3</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
+            </tr>
+            <tr>
+                <td class="digitButton" colspan="2" onclick="digitBtnPressed(0)">0</td>
+                <td class="ACButton" onclick="btnACPressed()">AC</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
+            </tr>
+            <tr>
+                <td class="operatorButton" colspan="4" onclick="equalsBtnPressed('=')">=</td>
+            </tr>
+        </table>
+        <script>
+
+             function appendFunction(func) {
+    document.getElementById("inputBox").value += func;
+    newLine = false;
+}
+
+function appendSymbol(symbol) {
+    document.getElementById("inputBox").value += symbol;
+    newLine = false;
+}
+
+// Evaluate expression safely when equals is pressed
+function equalsBtnPressed() {
+    try {
+        var expression = document.getElementById("inputBox").value
+            .replace(/%/g, '/100'); // handle percentage as division
+
+        var result = eval(expression);
+        document.getElementById("inputBox").value = result;
+    } catch (error) {
+        document.getElementById("inputBox").value = "Error";
+    }
+
+    newLine = true;
+}
+
+
+            var newLine = true //Boolean Variable. Dertemines if the netx thing the user should be on a new line
+            var value;
+            var currentOperator;
+
+            function appendToInput(operation) {
+                     const inputBox = 
+                    document.getElementById("inputBox");
+                        let value = parseFloat(inputBox.value);
+                        
+                        try {
+                            if (operation === '%' ) {
+                                    value = value / 100;
+                            } else if (operation === x2 ) {
+                                value = Math.pow(value, 2);
+                            } else if (operation === '(' || operation === ')' ) {
+                                inputBox.value += operation;
+                                return;
+                            } else {
+                                value = eval(operation + '(' + value + ')');
+                            }
+                            inputBox.value = value;
+                        } catch (e) {
+                            inputBox.value = "Error";
+                        }
+                    }
+
+            function appendToInput(value) {
+                const inputBox = 
+                document.getElementById("inputBox");
+                if (inputBox.value === "0" ||
+             inputBox.value === "Error") {
+                inputBox.value = value;
+             } else {
+                inputBox.value += value
+             }
+        }
+             
+            function clearInput() {
+                document.getElementById("inputBox").value = "0";   
+        }
+
+              function evaluateExpression() {
+                const inputBox =
+                document.getElementById("inputBox");
+                let expr = inputBox.value;
+              }
+                try {
+                    const result = 
+             math.evaluate(expr, {
+                        sin: (x) =>
+             math.sin(math.unit(x, 'deg')),
+                        cos: (x) =>
+             math.cos (math.unit(x, 'deg')),
+                        tan: (x) =>
+             math.tan(math.unit(x, 'deg'))
+                });
+
+                    inputBox.value = result;
+             } catch (e) {
+                    inputBox.value = "Error";
+                   }
+                
+
+            // Event handler for any digit button is pressed
+           
+            function digitBtnPressed(button) {
+                if (newLine) {
+                    document.getElementById("inputBox").value = button;
+                    newLine = false;
+                 } else {
+
+                var currentValue = document.getElementById("inputBox").value;
+                document.getElementById("inputBox").value = currentValue + button;
+                 }
+            }
+            // Event handler for when the AC button pressed
+            function btnACPressed() {
+                document.getElementById("inputBox").value = "0";
+                newLine = true;
+
+            }
+            function operatorBtnPressed(operator) {
+                currentOperator = operator;
+                value1 = parseInt(document.getElementById("inputBox").value);
+                newLine = true;
+            }
+            // Event handler for when the equals button is pressed
+            function equalsBtnPressed() {
+                var value2 = parseInt(document.getElementById("inputBox").value);
+                var finalTotal;
+
+                switch (currentOperator) {
+                    case '+':
+                        finalTotal = value1 + value2;
+                        break;
+                    case '-':
+                        finalTotal = value1 - value2;
+                        break;
+                    case '*':
+                        finalTotal = value1 * value2;
+                        break;
+                    case '/':
+                        finalTotal = value1 / value2;
+                        break;
+                }
+                document.getElementById("inputBox").value = finalTotal;
+
+                value1 = 0;
+                newLine = true; // Set newLine to true after calculation
+            }
+        </script>
+    </body>
+</html>
